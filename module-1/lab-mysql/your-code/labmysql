@@ -137,3 +137,7 @@ VALUES('00001', 'Petey Cruiser', 'Madrid'), ('00002', 'Anna Sthesia', 'Barcelona
 
 INSERT INTO Customers_has_Salesperson(`Custormer_Salesperson ID`, `Customers_Customer ID`, `Salesperson_Staff ID`)
 VALUES('0001', '0002', '0003'), ('0002', '0004', '0005'), ('0003', '0006', '0007');
+
+
+# MySQL Select
+# Challenge 1
