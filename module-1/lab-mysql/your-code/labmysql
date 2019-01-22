@@ -143,3 +143,14 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+# Challenge 3 - Seeding the Database
+
+USE mydb;
+ INSERT INTO Customers(`Customer ID`, `Name`, `Phone number`, `Email`, `Address`, `City`, `State`, `Country`, `Postal Code`)
+ VALUES('1001', 'Pablo Picasso', 4636176382, '-', 'Paseo de la Chopera, 14', 'Madrid', 'Madrid', 'Spain', '28045');
+
+INSERT INTO Salesperson(`Staff ID`, `Name`, `Store`)
+VALUES('00001', 'Petey Cruiser', 'Madrid'), ('00002', 'Anna Sthesia', 'Barcelona'), ('00003', 'Paul Molive', 'Berlín'),('00004', 'Gail Forcewind', 'Paris'),('00005', 'Paige Turner', 'Mimia'),('00006', 'Bob Frapples', 'Mexico City'),('00007', 'Water Melon', 'Amsterdam'),('00008', 'Shonda Leer', 'Sao Paulo');
+
