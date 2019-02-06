@@ -1,23 +1,24 @@
-import pandas as pd
+# Realizamos la importaciones que necesitaremos a lo largo del proyecto
+
 import numpy as np
+import pandas as pd
+import re
 import seaborn as sns
+import argparse
+
+# Importamos el archivo csv
+
+dfApp = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
 
 
 
-def acquire():
-    df = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
-    
-    return df
+dfReview = pd.read_csv('googleplaystore_user_reviews.csv', encoding = "utf-8")
 
+#DATA CLEANING
 
+# Limpiamos la columna Size y dejamos todas las medidas en MB
 
-def wrangle(df):
-    
-    #Elimino los posibles valores duplicados
-    dfwrang = df.drop_duplicates(subset='App', inplace=True)
-    return dfwrang
-
-def toMbg(x):
+def toMb(x):
     if 'M' in str(x):
         return str(x).replace('M', '')
     elif 'k' in str(x):
@@ -25,28 +26,75 @@ def toMbg(x):
     else:
         return str(x).replace('Varies with device', 'NaN')
 
-def cleaning(dfwrang):
-    dfwrang['Size'] = dfwrang['Size'].apply(lambda x: toMb(x))
-    dfwrang.loc[(dfwrang['Size']== '1,000+', 'Size')] = str(1)
-    dfwrang['Size'] = dfwrang['Size'].apply(lambda x: float(x))
-    return dfApp
+dfApp['Size'] = dfApp['Size'].apply(lambda x: toMb(x))
 
-def analyze(dfApp):
-    SizeRating = dfApp['Size'].corr(dfApp['Rating'])
-    return SizeRating
+dfApp.loc[(dfApp['Size']== '1,000+', 'Size')] = str(1)
+dfApp['Size'] = dfApp['Size'].apply(lambda x: float(x))
+
+print(dfApp.head())
+
+#Comprobamos que los datos son del tipo necesario para operar con ellos
+print(dfApp.dtypes)
+
+#Calculamos la correlación entre las columnas 'Rating' y 'Size'
+corrmat = dfApp.corr()
+print(corrmat)
+
+#Partíamos de la hipótesis que el Rating de las Apps estaba relacionado con su Size.
+# Aplicamos la correlación entre ambas columnas y comprobamos que la hipótesis es errónea.
+# Como refleja el siguiente gráfico:
+
+#f, ax = plt.subplots()
+p =sns.heatmap(corrmat, annot=True, cmap=sns.diverging_palette(220, 20, as_cmap=True))
+
+print(p)
+
+# Exporting DataFrame
+export = dfApp.to_csv('../output/dfApp.csv', index=False)
+
+
+
+
 '''
-def visualize(finalData,title):
-    #title = 'test'
-    fig, ax = plt.subplots(figsize=(12,10))
-    barchart=sns.barplot(data=finalData, x='Month', y='n_killed')
-    plt.title(title + "\n", fontsize=16)
-    
-    return barchart
+parser = argparse.ArgumentParser(description="Google Play data set analysis")
+
+parser.add_argument('action', help='La acción ejemplo)')
+parser.add_argument('foo-bar', help='Ejemplo de argparse')
+
+args = parser.parse_args()
+
+if args.action == "install":
+    print("You asked for installation")
+else:
+    print("You asked for something other than installation")
+
+# The following do not work:
+# print(args.foo-bar)
+# print(args.foo_bar)
+
+# But this works:
+print(getattr(args, 'foo-bar'))
+
+
 '''
+parser = argparse.ArgumentParser(description='Google dataset analysis .')
+
+parser.add_argument('-g', '--graph',  type = int, help='a correlation graph')
+
+parser.add_argument('-r', '--result', type = int, help = 'correlation result')
+
+args = parser.parse_args()
+
+
+
 
 if __name__ == '__main__':
+    
+
+    '''
     df = acquire()
     dfwrang = wrangle(df)
     dfApp = cleaning(dfwrang)
     SizeRating = analyze(dfApp)
     #barchart = visualize(finalData, tit)
+    ''' 
