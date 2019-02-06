@@ -38,6 +38,8 @@ print(dfApp.dtypes)
 
 #Calculamos la correlación entre las columnas 'Rating' y 'Size'
 corrmat = dfApp.corr()
+def correlacion():
+    return corrmat
 print(corrmat)
 
 #Partíamos de la hipótesis que el Rating de las Apps estaba relacionado con su Size.
@@ -89,7 +91,7 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
-    
+    correlacion = correlacion()    
 
     '''
     df = acquire()
