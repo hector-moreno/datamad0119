@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import seaborn as sns
 import argparse
+import subprocess
 
 # Importamos el archivo csv
 
@@ -79,11 +80,28 @@ print(getattr(args, 'foo-bar'))
 
 
 '''
+
+def reportTo(nombre, email):
+    texto = "Reportando a {}".format(nombre)
+
+    # Send the report via mail
+    mailCmd = 'echo "{}" | mail -s "New Report" "{}"'.format(texto,email)
+    subprocess.Popen(['/bin/bash', '-c', mailCmd])
+
+print("Sent report to mail {}".format(email))
+
+
+
+
 parser = argparse.ArgumentParser(description='Google dataset analysis .')
 
 parser.add_argument('-g', '--graph',  type = int, help='a correlation graph')
 
 parser.add_argument('-r', '--result', type = int, help = 'correlation result')
+
+parser.add_argument('-n', dest='nombre', default="Pepe", help='your name')
+
+parser.add_argument('-e', dest='email', default="escribeun@email", help='your
 
 args = parser.parse_args()
 
@@ -92,7 +110,7 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     correlacion = correlacion()    
-
+    #reportTo(args.nombre, args.email)
     '''
     df = acquire()
     dfwrang = wrangle(df)
