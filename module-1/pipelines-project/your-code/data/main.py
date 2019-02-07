@@ -21,7 +21,7 @@ import subprocess
 
 def acqData(csv):
 
-    df = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
+    csv = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
     return dfApp
 
 # DATA WRANGLING
@@ -166,7 +166,7 @@ parser.add_argument('-r', '--result', type = int, help = 'correlation result')
 
 parser.add_argument('-n', dest='nombre', default="Pepe", help='your name')
 
-parser.add_argument('-e', dest='email', default="escribeun@email", help='your
+parser.add_argument('-e', dest='email', default="escribeun@email", help='your')
 
 args = parser.parse_args()
 
@@ -175,10 +175,9 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     dataAcqu = acqData(csv)
-    dataWra = wraData(dfApp)
-    dataAna = toInput(dfApp)
-    dfApp = cleaning(dfwrang)
-    dataVis = Visual(dfApp)
+    dataWra = wraData(dataAcq)
+    dataAna = toInput(dataWra)
+    dataVis = Visual(dataWra)
     dataRep = reportTo(args.nombre, args.email)
     
  
