@@ -19,9 +19,9 @@ import subprocess
 
 # Importamos el archivo csv
 
-def acqData(csv):
+def acqData():
 
-    csv = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
+    dfApp = pd.read_csv('googleplaystore.csv', encoding = "utf-8")
     return dfApp
 
 # DATA WRANGLING
@@ -74,30 +74,70 @@ def wraData(dfApp):
 
 def toInput(dfApp):
     # Solicitud de los input:
-    while True:
-        print('Elige el par de elementos que quieres comparar')
-        try:
-            opciones = ['Rating', 'Reviews', 'Size', 'Installs', 'Price']
-            col1 = input('Choose the first: Rating, Reviews, Size, Installs or Price: ')
-            if col1 in opciones: 
-                print("Correct!!")  
-                
-            else:
-                raise ValueError ("It looks bad! Try again")
-                
-            col2 = input('Choose the second: Rating, Reviews, Size, Installs or Price: ')   
-            if col2 in opciones:
-                print("Correct!!")
-                print(col2)
-            else:
-                raise ValueError ("It looks bad! Try again") 
-        
-        except:
-            print ("INCORRECT input")
-            
-    # realización de la correlación.
+    print('Elige el par de elementos que quieres comparar')
+    try:
+        opciones = ['Rating', 'Reviews', 'Size', 'Installs', 'Price']
+        col1 = input('Choose the first: Rating, Reviews, Size, Installs or Price: ')
+        if col1 in opciones: 
+            print("Correct!!")  
 
-        return dfApp[col1].corr(dfApp[col2])
+        else:
+            raise ValueError ("It looks bad! Try again")
+
+        col2 = input('Choose the second: Rating, Reviews, Size, Installs or Price: ')   
+        if col2 in opciones:
+            print("Correct!!")
+        else:
+            raise ValueError ("It looks bad! Try again") 
+
+    except:
+        print ("INCORRECT input")
+
+    col_corr = dfApp[col1].corr(dfApp[col2])  
+    print('La correlación entre ', col1, 'y ', col2, 'es : ', col_corr)
+    
+    if col_corr < 0.6 or col_corr > -0.6:
+        print('Parece que no es muy significativa esa correlación')
+        print('\n')
+        print('pero, ¡espera!')
+        print('\n')
+        print('¿sabes que...?')
+        print('\n')
+        rating_promedio = np.mean(dfApp['Rating']) 
+        print('El rating promedio de las aplicaciones es ', rating_promedio)
+        cats_app = len(dfApp['Category'].unique())
+        print('\n')
+        print('Hay más de ', cats_app, ' categorías de aplicaciones')
+        cats = dfApp['Category'].value_counts().sort_values(ascending=False)
+        print('\n')
+        print('¿Cuáles?', cats)
+        print('\n')
+        print('Y por último, ya que preguntabas...')
+        max_cor = dfApp['Installs'].corr(dfApp['Reviews'])
+        print('Las variables que presentan más correlación son Instalaciones y Reviews con un :', max_cor)
+    else: 
+        print('Has dado con la mayor correlación entre variables!')
+        print('pero, ¡espera!')
+        print('\n')
+        print('¿sabes que...?')
+        print('\n')
+        rating_promedio = np.mean(dfApp['Rating']) 
+        print('El rating promedio de las aplicaciones es ', rating_promedio)
+        cats_app = len(dfApp['Category'].unique())
+        print('\n')
+        print('Hay más de ', cats_app, ' categorías de aplicaciones')
+        cats = dfApp['Category'].value_counts().sort_values(ascending=False)
+        print('\n')
+        print('¿Cuáles?', cats)
+
+
+    return col_corr
+
+#Pivotamos las columnas 'Category' y 'Type' para conocer mejor los promedios en instalaciones y rating.
+
+def pivDat(dataWra):
+    table = pd.pivot_table(dataWra, values=['Rating', 'Installs'], index=['Category', 'Type'], aggfunc={'Rating': np.mean,'Installs': [min, max, np.mean]})
+    return table
 
 
 # DATA CONCLUSIONS
@@ -106,9 +146,10 @@ def toInput(dfApp):
     Aplicamos la correlación entre ambas columnas y comprobamos que la hipótesis es errónea.
     Como refleja el siguiente gráfico:
 '''
-def Visual(dfApp):
-    correl = dfApp.corr()
-    graph =sns.heatmap(correlmat, annot=True, cmap=sns.diverging_palette(220, 20, as_cmap=True))
+
+def Visual(dataWra):
+    correl = dataWra.corr()
+    graph =sns.heatmap(correl, annot=True, cmap=sns.diverging_palette(220, 20, as_cmap=True))
     return graph
 
 
@@ -116,35 +157,13 @@ def Visual(dfApp):
 
 # Exporting DataFrame
 
-def expData(dfApp):
-    export = dfApp.to_csv('../output/dfApp.csv', index=False)
+def expData(dataWra):
+    export = dataWra.to_csv('../output/dfApp.csv', index=False)
     return export
 
 
 
-'''
-parser = argparse.ArgumentParser(description="Google Play data set analysis")
-
-parser.add_argument('action', help='La acción ejemplo)')
-parser.add_argument('foo-bar', help='Ejemplo de argparse')
-
-args = parser.parse_args()
-
-if args.action == "install":
-    print("You asked for installation")
-else:
-    print("You asked for something other than installation")
-
-# The following do not work:
-# print(args.foo-bar)
-# print(args.foo_bar)
-
-# But this works:
-print(getattr(args, 'foo-bar'))
-
-
-'''
-# Generamo la función para reportar
+# Generamos la función para reportar
 
 def reportTo(nombre, email):
     texto = "Reportando a {}".format(nombre)
@@ -174,10 +193,10 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
-    dataAcqu = acqData(csv)
-    dataWra = wraData(dataAcq)
+    dataAcqu = acqData()
+    dataWra = wraData(dataAcqu)
     dataAna = toInput(dataWra)
     dataVis = Visual(dataWra)
-    dataRep = reportTo(args.nombre, args.email)
+    dataPiv = pivDat(dataWra)
     
  
