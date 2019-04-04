@@ -6,28 +6,26 @@
 
 - This project pretend to develop a fake news detector.
 
-    - For this project we have to build an dataset because of the           
+    - For this project I had to build a dataset because of the           
       inexistence of such a corpus in Spanish.
 
-    - Once we hava a dataset, we have develop a machine learning model to  
+    - Once I had a dataset, I have developed a machine learning model to  
       classify the news: false or true.
     
     - So, we are in front of a supervised learning challenge.
 
 ## Competitive advantage:
 
--The innovation is found in the fact that the project is specifically directed to news in Spanish because. 
-
-    - There is no other detector targeted to this language.
+-The innovation is found in the fact that the project is specifically directed to news in Spanish because there is no other detector targeted to this language.
 
 
 ## Creation of the defintive dataset
 
-We have created the **dataset** making web scraping for real and false news. 
+I have created the **dataset** making web scraping for real and false news. 
 
-We take the **real news** from different spanish dailies (by web scraping) whose reputation about their veracity has been demonstrated along the years. 
+I took the **real news** from different spanish dailies (by web scraping) whose reputation about their veracity has been demonstrated along the years. 
 
-We find the **false news** orienting by the maldita.es web whose goal is to research about the falsity of some news. We get the ones that are marked as false by maldita.es team (a web whose porpose is to research about false online news and rumours). Some has been scraped by hand for the ineffectiveness of coding for a python scrap because of are very few news for each particular newspaper, but the most of them have been obtained by web scraping.
+I found the **false news** orienting by the maldita.es web whose goal is to research about the falsity of some news. I have got the ones that are marked as false by maldita.es team (a web whose porpose is to research about false online news and rumours). Some has been scraped by hand for the ineffectiveness of coding for a python scrap because of are very few news for each particular newspaper, but the most of them have been obtained by web scraping.
 
     **Result**
     A dataframe with the next record:
@@ -51,7 +49,7 @@ We find the **false news** orienting by the maldita.es web whose goal is to rese
 
         -body length:        the length of the new's body in number of characters. 
 
-# We have built a function for scraping the targeted news.
+# I have built a function for scraping the targeted news.
 
 **news_scraper**(url):
     '''
@@ -82,7 +80,7 @@ For this task, we will combine differente ways of processing text (vectorizer) w
     LogisticRegression.
     LinearSVC
 
-So, we will test (by accuracy and confusion matrix) the next mixes of vectorizer and classficator:
+So, I will test (by accuracy and confusion matrix) the next mixes of vectorizer and classficator:
 
     Ad hoc + nltk.naivebayes
     TFIDF + multinomialNB
@@ -95,7 +93,7 @@ So, we will test (by accuracy and confusion matrix) the next mixes of vectorizer
     Countvectorizer + LinearSVC.
     Countvectorizer + LinearSVC with 3 ngrams.
 
-Finally, we will choose the mix with better combination and build s python script to detect false new.
+Finally, I will choose the mix with better combination and build s python script to detect false new.
 
 ## FILES IN THE REPOSITORY:
 
