@@ -4,7 +4,7 @@
 
     **Objective**:
 
-- This project pretend to develop a fake news detector.
+- This project pretends to develop a fake news detector.
 
     - For this project I had to build a dataset because of the           
       inexistence of such a corpus in Spanish.
